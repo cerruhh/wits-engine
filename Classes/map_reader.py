@@ -17,9 +17,20 @@ class Reader:
         self.dataframe = read_csv(self.map_location)
 
     def change_map(self, map_location: str):
+        """
+        Changes the map currently used
+        :param map_location:
+        :return:
+        """
         self.dataframe = read_csv(map_location)
 
     def change_map_geometry(self, geometry_location: tuple, object_to_change_to: str):
+        """
+        Changes a piece of the map by coordinate to a given object.
+        :param geometry_location:
+        :param object_to_change_to:
+        :return:
+        """
         if len(object_to_change_to) != 1:
             logging.error(msg="Object to change to was longer than 1 charachter")
             exit(1)
@@ -37,12 +48,20 @@ class Reader:
         self.dataframe.iloc[geometry_location] = object_to_change_to
         logging.log(msg=f"Cell changed {change_cell} -> {object_to_change_to}", level=1)
 
-    def get_cell_from_location(self, geometry_location:tuple):
+    def get_cell_from_location(self, geometry_location: tuple):
+        """
+        Returns a cell from coordinates.
+        :param geometry_location:
+        :return:
+        """
         if len(geometry_location) != 2:
-            logging.error(msg=f"Trying to get location of cell from more than 2 coordinates. value: {geometry_location}")
+            logging.error(
+                msg=f"Trying to get location of cell from more than 2 coordinates. value: {geometry_location}")
             exit(1)
 
         get_location = self.dataframe.iloc[geometry_location]
         if not get_location:
             logging.error(msg=f"location does not exist. value: {geometry_location}")
             exit(1)
+
+        return self.dataframe.iloc[geometry_location]
