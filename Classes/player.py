@@ -6,7 +6,7 @@ from pandas import read_csv
 #     with open(file=path, mode="r") as file:
 #         return read_csv(path)
 
-def get_data_list_from_init(items:str):
+def get_data_list_from_init(items: str):
     """
     makes a list from items that the player owns, and turns it into a array.
     :param items:
@@ -20,7 +20,7 @@ def get_data_list_from_init(items:str):
     return new_dict
 
 
-def calculate_weight(items:list):
+def calculate_weight(items: list):
     """
     calculates the weight of a player by adding all items weight values togheter
     :param items:
@@ -33,7 +33,7 @@ def calculate_weight(items:list):
 
 
 class Player:
-    def __init__(self, spawn: tuple, data:dict):
+    def __init__(self, spawn: tuple, data: dict):
         """
         Initalize all values that logic needs to calculate rounds of wits
         :param spawn:
@@ -53,16 +53,12 @@ class Player:
 
         self.weight = calculate_weight(items=self.items)
 
-
-    def can_move_to_location(self, new_location:tuple):
+    def can_move_to_location(self, new_location: tuple):
         """
         Calculates if the player can move to a given location of a chain
         :param new_location:
         :return:
         """
-
-        can_move_on_x = False
-        can_move_on_y = False
 
         dx = abs(new_location[0] - self.location[0])
         dy = abs(new_location[1] - self.location[1])
@@ -75,4 +71,5 @@ class Player:
             return False
 
         # All checks passed
+        self.location = new_location
         return True

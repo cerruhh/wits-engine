@@ -31,9 +31,10 @@ class Logic:
 
         self.players = get_list_of_players(spawn_location=self.player_spawn_points[0])
 
-    def can_move_to_location(self, location_chain: tuple):
+    def can_move_to_location(self, location_chain: tuple, player:Classes.player.Player):
         """
         This function Checks if the player can move to a specified location.
+        :param player:
         :param location_chain:
         :return:
         """
@@ -54,6 +55,9 @@ class Logic:
                 logging.error(msg=f"returned location does not exist. value: {returned_location}")
                 return False
 
-            if returned_location in self.battlefield_legend["main"]["unpassable"]:
+            if returned_location in self.player_can_pass_array:
                 logging.error(msg=f"cannot go through mapping 'unpassable'. Value: {returned_location}")
                 return False
+
+            if player.can_move_to_location(new_location=location_tuple):
+                return True
