@@ -1,6 +1,18 @@
 import csv
 from pandas import read_csv, DataFrame
 import logging
+import tomllib
+
+
+def import_settings(path: str = "../mappings/settings.toml"):
+    """
+    import the settings.toml file from the mappings
+    :param path:
+    :return:
+    """
+    with open(file=path, mode="rb") as settings_file:
+        settings = tomllib.load(settings_file)
+        return settings
 
 
 class Reader:
@@ -10,10 +22,16 @@ class Reader:
     map_spawn is the spawn point for the player
     """
 
-    def __init__(self, map_location: str, map_spawn_location: tuple):
+    def __init__(self, map_location: str, map_spawn_location: tuple = (0, 0)):
+        """
+        Initalizse values map location as in the path to the .csv file
+        map_spawn is the main_spawn of the map, if none is given.
+        :param map_location:
+        :param map_spawn_location:
+        """
         self.map_location = map_location
         self.map_spawn = map_spawn_location
-
+        self.settings = import_settings(path="../mappings/settings.toml")
         self.dataframe = read_csv(self.map_location)
 
     def change_map(self, map_location: str):
@@ -38,14 +56,14 @@ class Reader:
             logging.error(msg="geometry location tuple lenght was not 2. exiting")
             exit(1)
 
-        change_cell = self.dataframe.iloc[geometry_location[0]][geometry_location[1]]
+        change_cell = self.dataframe.iloc[geometry_location[0] + 1][geometry_location[1] + 1]
         logging.log(level=1, msg=f"Cell to be changed: {change_cell}")
 
         if not change_cell:
             logging.error(f"Cell to be changed does not exist. value = {change_cell}")
             exit(1)
 
-        self.dataframe.iloc[geometry_location] = object_to_change_to
+        self.dataframe.iloc[geometry_location[0] + 1, geometry_location[1] + 1] = object_to_change_to
         logging.log(msg=f"Cell changed {change_cell} -> {object_to_change_to}", level=1)
 
     def get_cell_from_location(self, geometry_location: tuple):
@@ -59,9 +77,9 @@ class Reader:
                 msg=f"Trying to get location of cell from more than 2 coordinates. value: {geometry_location}")
             exit(1)
 
-        get_location = self.dataframe.iloc[geometry_location]
+        get_location = self.dataframe.iloc[geometry_location[0] + 1, geometry_location[1] + 1]
         if not get_location:
             logging.error(msg=f"location does not exist. value: {geometry_location}")
             exit(1)
 
-        return self.dataframe.iloc[geometry_location]
+        return self.dataframe.iloc[geometry_location[0] + 1, geometry_location[1] + 1]
