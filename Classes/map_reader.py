@@ -20,6 +20,8 @@ class Reader:
     Reads Map Files.
     map_location is the location of the map on your disk
     map_spawn is the spawn point for the player
+
+    Generally responsible for lower level tasks to do with the map geometry
     """
 
     def __init__(self, map_location: str, map_spawn_location: tuple = (0, 0)):
@@ -33,6 +35,10 @@ class Reader:
         self.map_spawn = map_spawn_location
         self.settings = import_settings(path="../mappings/settings.toml")
         self.dataframe = read_csv(self.map_location)
+
+        logging.basicConfig(level=self.settings["developer"]["loglevel"])
+
+
 
     def change_map(self, map_location: str):
         """
@@ -57,14 +63,14 @@ class Reader:
             exit(1)
 
         change_cell = self.dataframe.iloc[geometry_location[0] + 1][geometry_location[1] + 1]
-        logging.log(level=1, msg=f"Cell to be changed: {change_cell}")
+        logging.log(level=logging.DEBUG, msg=f"Cell to be changed: {change_cell}")
 
         if not change_cell:
             logging.error(f"Cell to be changed does not exist. value = {change_cell}")
             exit(1)
 
         self.dataframe.iloc[geometry_location[0] + 1, geometry_location[1] + 1] = object_to_change_to
-        logging.log(msg=f"Cell changed {change_cell} -> {object_to_change_to}", level=1)
+        logging.log(msg=f"Cell changed {change_cell} -> {object_to_change_to}", level=logging.DEBUG)
 
     def get_cell_from_location(self, geometry_location: tuple):
         """

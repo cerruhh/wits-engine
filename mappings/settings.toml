@@ -1,2 +1,5 @@
+[map]
+amount_of_cells_per_turn = 5
+
 [developer]
-loglevel = 5
+loglevel = 10 # Debug

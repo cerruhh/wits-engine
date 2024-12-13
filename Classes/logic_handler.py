@@ -1,5 +1,23 @@
 import logging
+import csv
+from pandas import read_csv
 from Classes.get_battle_field_json import get_battle_field
+import Classes.player
+
+
+def get_list_of_players(path: str = "../mappings/players.csv", spawn_location: tuple = (0, 0)):
+    players = []
+    with open(file=path, mode='r') as file:
+        # Create a DictReader object
+        reader = csv.DictReader(file)
+
+        # Convert the reader to a list of dictionaries
+        dict_list = list(reader)
+
+    for player in dict_list:
+        new_player = Classes.player.Player(spawn=spawn_location, data=player)
+        players.append(new_player)
+    return players
 
 
 class Logic:
@@ -9,6 +27,9 @@ class Logic:
         self.battlefield_legend = get_battle_field(battlefield_path)
         self.player_can_land_array = self.battlefield_legend["main"]["cannot_end"]
         self.player_can_pass_array = self.battlefield_legend["main"]["unpassable"]
+        self.settings = self.reader.settings
+
+        self.players = get_list_of_players(spawn_location=self.player_spawn_points[0])
 
     def can_move_to_location(self, location_chain: tuple):
         """
@@ -16,7 +37,7 @@ class Logic:
         :param location_chain:
         :return:
         """
-        if len(location_chain) > 5:
+        if len(location_chain) > self.settings["map"]["amount_of_cells_per_turn"]:
             logging.error(msg=f"location chain too long (longer than 5). Value: {location_chain}")
             return False
 
@@ -25,8 +46,8 @@ class Logic:
             logging.error(msg="cannot land on mapping 'cannot_end' charachter")
             return False
 
-        logging.log(level=5, msg="Last Point of movement chain check passed.")
-        logging.log(level=5, msg=f"lenght of location chain: {location_chain}")
+        logging.log(level=logging.DEBUG, msg="Last Point of movement chain check passed.")
+        logging.log(level=logging.DEBUG, msg=f"lenght of location chain: {len(location_chain)}")
         for location_tuple in location_chain:
             returned_location = self.reader.get_cell_from_location(location_tuple)
             if not returned_location:
