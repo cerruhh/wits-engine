@@ -31,7 +31,7 @@ class Logic:
 
         self.players = get_list_of_players(spawn_location=self.player_spawn_points[0])
 
-    def can_move_to_location(self, location_chain: tuple, player:Classes.player.Player):
+    def can_move_to_location(self, location_chain: tuple, player: Classes.player.Player):
         """
         This function Checks if the player can move to a specified location.
         :param player:
@@ -61,3 +61,22 @@ class Logic:
 
             if player.can_move_to_location(new_location=location_tuple):
                 return True
+
+    def move_to_location(self, new_location: tuple, player: Classes.player.Player):
+        if not player or not new_location:
+            logging.error(msg="Player Or new_location are undefined.")
+            return False
+
+        if len(new_location) != 2:
+            logging.error("new location tuple is more than 2 coordinates.")
+
+        self.reader.change_map_geometry(geometry_location=player.location, object_to_change_to="")
+        logging.log(level=logging.DEBUG, msg="Set Players Old location to ''.")
+        self.reader.change_map_geometry(geometry_location=new_location, object_to_change_to=player.icon)
+        logging.log(level=logging.DEBUG, msg=f"Set Players New location to players desired icon: {player.icon}")
+        player.location = new_location
+
+        if self.reader.get_cell_from_location(geometry_location=new_location) != player.icon:
+            logging.warning(msg="New location does not contain the players icon!")
+
+        return player

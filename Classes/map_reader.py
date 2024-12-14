@@ -34,7 +34,7 @@ class Reader:
         self.map_location = map_location
         self.map_spawn = map_spawn_location
         self.settings = import_settings(path="../mappings/settings.toml")
-        self.dataframe = read_csv(self.map_location)
+        self.dataframe = read_csv(self.map_location, dtype=object)
 
         logging.basicConfig(level=self.settings["developer"]["loglevel"])
 
@@ -46,7 +46,7 @@ class Reader:
         :param map_location:
         :return:
         """
-        self.dataframe = read_csv(map_location)
+        self.dataframe = read_csv(map_location, dtype=object)
 
     def change_map_geometry(self, geometry_location: tuple, object_to_change_to: str):
         """
@@ -56,13 +56,13 @@ class Reader:
         :return:
         """
         if len(object_to_change_to) != 1:
-            logging.error(msg="Object to change to was longer than 1 charachter")
-            exit(1)
+            logging.log(msg="Object to change to was longer than 1 charachter, likely an emoji.", level=logging.DEBUG)
+
         elif len(geometry_location) != 2:
             logging.error(msg="geometry location tuple lenght was not 2. exiting")
             exit(1)
 
-        change_cell = self.dataframe.iloc[geometry_location[0] + 1][geometry_location[1] + 1]
+        change_cell = self.dataframe.iloc[geometry_location[0] + 1,geometry_location[1] + 1]
         logging.log(level=logging.DEBUG, msg=f"Cell to be changed: {change_cell}")
 
         if not change_cell:
