@@ -3,9 +3,9 @@ import csv
 from pandas import read_csv
 from Classes.get_battle_field_json import get_battle_field
 import Classes.player
+import Classes.map_reader
 
-
-def get_list_of_players(path: str = "../mappings/players.csv", spawn_location: tuple = (0, 0)):
+def get_list_of_players(path: str = "../mappings/players.csv", spawn_location: tuple = (0, 0)) -> list:
     players = []
     with open(file=path, mode='r') as file:
         # Create a DictReader object
@@ -21,7 +21,7 @@ def get_list_of_players(path: str = "../mappings/players.csv", spawn_location: t
 
 
 class Logic:
-    def __init__(self, reader, spawn_points: tuple, battlefield_path: str):
+    def __init__(self, reader:Classes.map_reader.Reader, spawn_points: tuple, battlefield_path: str) -> None:
         self.reader = reader
         self.player_spawn_points = spawn_points
         self.battlefield_legend = get_battle_field(battlefield_path)
@@ -31,7 +31,7 @@ class Logic:
 
         self.players = get_list_of_players(spawn_location=self.player_spawn_points[0])
 
-    def can_move_to_location(self, location_chain: tuple, player: Classes.player.Player):
+    def can_move_to_location(self, location_chain: tuple, player: Classes.player.Player) -> bool:
         """
         This function Checks if the player can move to a specified location.
         :param player:
@@ -62,7 +62,7 @@ class Logic:
             if player.can_move_to_location(new_location=location_tuple):
                 return True
 
-    def move_to_location(self, new_location: tuple, player: Classes.player.Player):
+    def move_to_location(self, new_location: tuple, player: Classes.player.Player) -> bool:
         if not player or not new_location:
             logging.error(msg="Player Or new_location are undefined.")
             return False
@@ -79,4 +79,4 @@ class Logic:
         if self.reader.get_cell_from_location(geometry_location=new_location) != player.icon:
             logging.warning(msg="New location does not contain the players icon!")
 
-        return player
+        return True

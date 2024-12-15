@@ -1,14 +1,12 @@
 import logging
-from pandas import read_csv
-
-
 # def get_player_csv(path: str = "../mappings/players.csv"):
 #     with open(file=path, mode="r") as file:
 #         return read_csv(path)
 
-def get_data_list_from_init(items: str):
+
+def get_data_list_from_init(items: str) -> list:
     """
-    makes a list from items that the player owns, and turns it into a array.
+    makes a list from items that the player owns, and turns it into an array.
     :param items:
     :return:
     """
@@ -20,7 +18,7 @@ def get_data_list_from_init(items: str):
     return new_dict
 
 
-def calculate_weight(items: list):
+def calculate_weight(items: list) -> int:
     """
     calculates the weight of a player by adding all items weight values togheter
     :param items:
@@ -53,7 +51,7 @@ class Player:
         #       print(self.items)
         self.weight = calculate_weight(items=self.items)
 
-    def can_move_to_location(self, new_location: tuple):
+    def can_move_to_location(self, new_location: tuple) -> bool:
         """
         Calculates if the player can move to a given location of a chain.
         Returns true if the new location is touching the player.
