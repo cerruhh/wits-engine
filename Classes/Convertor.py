@@ -3,7 +3,7 @@ import numpy
 
 
 class Convertor:
-    def __init__(self, one_list:list, zero_list:list):
+    def __init__(self, one_list: list, zero_list: list):
         self.onelist = one_list
         self.zerolist = zero_list
 
@@ -17,6 +17,8 @@ class Convertor:
 
         df = df.fillna(0)
         mz_array = df.to_numpy()
+
+#       mz_array = [[element * 2 for element in row] for row in mz_array]
 
         mz_array = numpy.repeat(mz_array, 2, axis=0)
 

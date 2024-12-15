@@ -35,7 +35,7 @@ can_move_to_loc = map_logic.can_move_to_location(location_chain=location_chain, 
 convertor = Convertor(one_list=map_logic.player_can_pass_array, zero_list=[""])
 new_cv =convertor.convert_df_to_astar(df=map_logic.reader.dataframe)
 print(new_cv)
-astar_example = Classes.astar.example(maze=new_cv, print_maze=False, start=first_player.location, end=(0,4))
+astar_example = Classes.astar.example(maze=new_cv, print_maze=True, start=first_player.location, end=(0,4))
 print(astar_example)
 
 if can_move_to_loc:
