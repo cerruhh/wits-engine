@@ -33,7 +33,7 @@ class Reader:
         self.map_location = map_location
         self.map_spawn = map_spawn_location
         self.settings = import_settings(path="../mappings/settings.toml")
-        self.dataframe = read_csv(self.map_location, dtype=object)
+        self.dataframe = read_csv(self.map_location, dtype=object, header=None)
 
         logging.basicConfig(level=self.settings["developer"]["loglevel"])
 
@@ -43,7 +43,7 @@ class Reader:
         :param map_location:
         :return:
         """
-        self.dataframe = read_csv(map_location, dtype=object)
+        self.dataframe = read_csv(map_location, dtype=object, header=None)
 
     def change_map_geometry(self, geometry_location: tuple, object_to_change_to: str) -> bool:
         """

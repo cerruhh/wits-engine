@@ -20,5 +20,4 @@ class Convertor:
 
         mz_array = numpy.repeat(mz_array, 2, axis=0)
 
-        print(mz_array)
         return mz_array

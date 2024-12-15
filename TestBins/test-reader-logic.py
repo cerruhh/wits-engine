@@ -6,7 +6,7 @@ from Classes.map_reader import Reader
 from Classes.Convertor import Convertor
 import os
 print(f"PWD: {os.getcwd()}")
-
+import Classes.astar
 
 WITS_MAP_LOCATION = "../Maps/wits-testimony.csv"
 BATTLEFIELD_LEGEND_PATH = "../mappings/battlefield_legend.json"
@@ -14,11 +14,11 @@ BATTLEFIELD_LEGEND_PATH = "../mappings/battlefield_legend.json"
 choose_map = input("Do you want to load a save or a new Map? (Map/Save)")
 
 if choose_map.lower() == "map":
-    sel_map = input("Please Input the map files full name. (/Maps)")
+    sel_map = input("Please Input the map files full name. (/Maps) ")
     if sel_map:
         WITS_MAP_LOCATION = f"../Maps/{sel_map}"
 elif choose_map.lower() == "saves":
-    sel_save = input("Please Input a save files name. (/Saves)")
+    sel_save = input("Please Input a save files name. (/Saves) ")
     if sel_save:
         WITS_MAP_LOCATION = f"../Saves/{sel_save}"
 
@@ -33,8 +33,10 @@ can_move_to_loc = map_logic.can_move_to_location(location_chain=location_chain, 
 
 
 convertor = Convertor(one_list=map_logic.player_can_pass_array, zero_list=[""])
-print(map_logic.reader.dataframe)
-convertor.convert_df_to_astar(df=map_logic.reader.dataframe)
+new_cv =convertor.convert_df_to_astar(df=map_logic.reader.dataframe)
+print(new_cv)
+astar_example = Classes.astar.example(maze=new_cv, print_maze=False, start=first_player.location, end=(0,4))
+print(astar_example)
 
 if can_move_to_loc:
     print(first_player.location)
