@@ -18,8 +18,17 @@ class Convertor:
         df = df.fillna(0)
         mz_array = df.to_numpy()
 
-#       mz_array = [[element * 2 for element in row] for row in mz_array]
+        #       mz_array = [[element * 2 for element in row] for row in mz_array]
 
         mz_array = numpy.repeat(mz_array, 2, axis=0)
 
         return mz_array
+
+    def convert_astar_to_xy(self, tuples_list: list = None):
+        """
+        Swaps a tuple
+        :param tuples_list:
+        :return:
+        """
+        swapped_tuples_list = [(y, x) for x, y in tuples_list]
+        return swapped_tuples_list
