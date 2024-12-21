@@ -17,11 +17,11 @@ choose_map = input("Do you want to load a save or a new Map? (Map/Save) ")
 if choose_map.lower() == "map":
     sel_map = input("Please Input the map files full name. (/Maps) ")
     if sel_map:
-        WITS_MAP_LOCATION = f"../Maps/{sel_map}"
+        WITS_MAP_LOCATION = f"Maps/{sel_map}"
 elif choose_map.lower() == "saves":
     sel_save = input("Please Input a save files name. (/Saves) ")
     if sel_save:
-        WITS_MAP_LOCATION = f"../Saves/{sel_save}"
+        WITS_MAP_LOCATION = f"Saves/{sel_save}"
 
 map_reader = Reader(map_location=WITS_MAP_LOCATION, map_spawn_location=(0, 0))
 map_logic = Logic(reader=map_reader, spawn_points=(0, 0), battlefield_path=BATTLEFIELD_LEGEND_PATH)
