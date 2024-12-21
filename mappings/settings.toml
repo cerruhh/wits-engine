@@ -3,4 +3,4 @@ amount_of_cells_per_turn = 5
 dice_sides = 20
 
 [developer]
-loglevel = 100 # Debug
+loglevel = 1000 # Debug

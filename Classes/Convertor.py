@@ -8,12 +8,15 @@ class Convertor:
         self.zerolist = zero_list
 
     def convert_df_to_astar(self, df: pandas.DataFrame):
+        pandas.set_option('future.no_silent_downcasting', True)
         df = df.fillna("")
         for i in self.onelist:
             df = df.replace(i, value=1)
+            df = df.infer_objects(copy=False)
 
         for i in self.zerolist:
             df = df.replace(i, value=0)
+            df = df.infer_objects(copy=False)
 
         df = df.fillna(0)
         mz_array = df.to_numpy()

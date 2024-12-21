@@ -31,19 +31,20 @@ class Logic:
 
         self.players = get_list_of_players(spawn_location=self.player_spawn_points[0])
 
-    def can_move_to_location(self, location_chain: tuple, player: Classes.player.Player) -> bool:
+    def can_move_to_location(self, location_chain: tuple, player: Classes.player.Player, desired_location: str) -> bool:
         """
         This function Checks if the player can move to a specified location.
+        :param desired_location:
         :param player:
         :param location_chain:
         :return:
         """
+
         if len(location_chain) > self.settings["map"]["amount_of_cells_per_turn"]:
             logging.error(msg=f"location chain too long (longer than 5). Value: {location_chain}")
             return False
 
-        end_point = location_chain[-1]
-        if end_point in self.player_can_land_array or end_point in self.player_can_land_array:
+        if desired_location in self.player_can_land_array or desired_location in self.player_can_land_array:
             logging.error(msg="cannot land on mapping 'cannot_end' charachter")
             return False
 
