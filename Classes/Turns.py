@@ -1,8 +1,39 @@
 import logging
+from getpass import fallback_getpass
+
 import Classes.logic_handler
 import Classes.Convertor
 import Classes.astar
 from random import randint
+
+
+def check_where_to_move(input_text: str = None):
+    """
+    Checks the move_to_location to exclude crashes.
+    :param input_text:
+    :return:
+    """
+    if not input_text:
+        print("Invalid input text")
+        return False
+
+    if input_text.find(",") == -1:
+        print("No comma found in text")
+        return False
+
+    if input_text.count(",") != 1:
+        print("Too many commas found")
+        return False
+
+    split = input_text.split(",")
+    for i in split:
+        try:
+            int(i)
+        except ValueError:
+            print("Coordinate not intiger.")
+            return False
+
+    return True
 
 
 class Turns:
@@ -13,6 +44,10 @@ class Turns:
         self.convertor = convertor
 
     def turn_new(self):
+        """
+        Creates a new turn, do this indefinetly to keep the game going
+        :return:
+        """
         print(f"Current Turn: {self.turn}")
         self.turn += 1
         amount_of_cells_to_move = self.logic.settings["map"]["amount_of_cells_per_turn"]
@@ -20,7 +55,13 @@ class Turns:
             print(f"The current player: {player.name} ({player.username})")
             print(f"You current location is: {player.location}")
             while True:
-                where_to_move = input("Where would you like to move? (eg. 2,3) ")
+                where_to_move = ""
+                while True:
+                    where_to_move = input("Where would you like to move? (eg. 2,3) ")
+                    if check_where_to_move(input_text=where_to_move):
+                        break
+
+                logging.log(msg=where_to_move, level=logging.DEBUG)
                 move_split = where_to_move.split(sep=",")
                 if len(move_split) != 2:
                     logging.error(msg="move split longer than 2, exiting")
@@ -39,13 +80,17 @@ class Turns:
                     print("Try again.")
                     break
                 cell_at_desired_location = self.logic.reader.get_cell_from_location(geometry_location=desired_location)
-                if self.logic.can_move_to_location(location_chain=final_path, player=player, desired_location=self.logic.reader.get_cell_from_location(desired_location)):
-                    logging.log(msg=f"cell_at_desired_loc: {cell_at_desired_location}",level=logging.DEBUG)
+                if self.logic.can_move_to_location(location_chain=final_path, player=player,
+                                                   desired_location=self.logic.reader.get_cell_from_location(
+                                                           desired_location)):
+                    logging.log(msg=f"cell_at_desired_loc: {cell_at_desired_location}", level=logging.DEBUG)
                     self.logic.move_to_location(player=player, new_location=desired_location)
                     print(f"You have successfully moved to location {desired_location}")
                     break
                 else:
-                    logging.log(msg=f"cell_at_desired_loc: {self.logic.reader.get_cell_from_location(geometry_location=desired_location)}", level=logging.DEBUG)
+                    logging.log(
+                        msg=f"cell_at_desired_loc: {self.logic.reader.get_cell_from_location(geometry_location=desired_location)}",
+                        level=logging.DEBUG)
                     print(f"Cannot move to wanted location, try again!")
                     print(f"Cell at wanted location: {cell_at_desired_location}")
                     continue
