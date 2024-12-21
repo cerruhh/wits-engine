@@ -5,7 +5,8 @@ from Classes.get_battle_field_json import get_battle_field
 import Classes.player
 import Classes.map_reader
 
-def get_list_of_players(path: str = "../mappings/players.csv", spawn_location: tuple = (0, 0)) -> list:
+
+def get_list_of_players(path: str = "mappings/players.csv", spawn_location: tuple = (0, 0)) -> list:
     players = []
     with open(file=path, mode='r') as file:
         # Create a DictReader object
@@ -21,7 +22,7 @@ def get_list_of_players(path: str = "../mappings/players.csv", spawn_location: t
 
 
 class Logic:
-    def __init__(self, reader:Classes.map_reader.Reader, spawn_points: tuple, battlefield_path: str) -> None:
+    def __init__(self, reader: Classes.map_reader.Reader, spawn_points: tuple, battlefield_path: str) -> None:
         self.reader = reader
         self.player_spawn_points = spawn_points
         self.battlefield_legend = get_battle_field(battlefield_path)
@@ -32,7 +33,6 @@ class Logic:
         self.player_can_pass_array = self.battlefield_legend["main"]["unpassable"]
         for i in self.players:
             self.player_can_pass_array.append(i.icon)
-
 
     def can_move_to_location(self, location_chain: tuple, player: Classes.player.Player, desired_location: str) -> bool:
         """

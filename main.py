@@ -9,8 +9,8 @@ import os
 
 print(f"PWD: {os.getcwd()}")
 
-WITS_MAP_LOCATION = "../Maps/wits-testimony.csv"
-BATTLEFIELD_LEGEND_PATH = "../mappings/battlefield_legend.json"
+WITS_MAP_LOCATION = "Maps/wits-testimony.csv"
+BATTLEFIELD_LEGEND_PATH = "mappings/battlefield_legend.json"
 
 choose_map = input("Do you want to load a save or a new Map? (Map/Save) ")
 
