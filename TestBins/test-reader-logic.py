@@ -26,13 +26,8 @@ elif choose_map.lower() == "saves":
 map_reader = Reader(map_location=WITS_MAP_LOCATION, map_spawn_location=(0, 0))
 map_logic = Logic(reader=map_reader, spawn_points=(0, 0), battlefield_path=BATTLEFIELD_LEGEND_PATH)
 
-# first_player = map_logic.players[0]
-# location_chain = ((0, 1), (0, 2), (1, 3), (2, 4), (3, 5))
-
-# can_move_to_loc = map_logic.can_move_to_location(location_chain=location_chain, player=first_player)
 
 convertor = Convertor(one_list=map_logic.player_can_pass_array, zero_list=[""])
-
 turns = Turns(logic=map_logic, convertor=convertor)
 
 while True:

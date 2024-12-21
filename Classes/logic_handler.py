@@ -26,10 +26,13 @@ class Logic:
         self.player_spawn_points = spawn_points
         self.battlefield_legend = get_battle_field(battlefield_path)
         self.player_can_land_array = self.battlefield_legend["main"]["cannot_end"]
-        self.player_can_pass_array = self.battlefield_legend["main"]["unpassable"]
         self.settings = self.reader.settings
 
         self.players = get_list_of_players(spawn_location=self.player_spawn_points[0])
+        self.player_can_pass_array = self.battlefield_legend["main"]["unpassable"]
+        for i in self.players:
+            self.player_can_pass_array.append(i.icon)
+
 
     def can_move_to_location(self, location_chain: tuple, player: Classes.player.Player, desired_location: str) -> bool:
         """
